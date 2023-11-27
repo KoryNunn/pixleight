@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
   const targetCanvas = document.querySelector('.targetCanvas');
+  const pixelizationRange = document.querySelector('.pixelization');
   const context = targetCanvas.getContext('2d');
   const search = window.location.search.slice(1);
   const query = Object.fromEntries(search.split('&').map(entries => entries.split('=').map(string => decodeURIComponent(string))));
@@ -9,7 +10,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     function setPixelation(ratio) {
       const aspectRatio = image.height / image.width;
-      const width = Math.min(image.width, window.innerWidth, 600);
+      const width = Math.min(image.width, window.innerWidth, 800);
       const height = width * aspectRatio;
       targetCanvas.width = width;
       targetCanvas.height = height;
@@ -36,11 +37,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     render();
 
-    targetCanvas.addEventListener('mouseenter', () => {
-      pixelationTarget = 1;
-    });
-    targetCanvas.addEventListener('mouseleave', () => {
-      pixelationTarget = 100;
+    pixelizationRange.addEventListener('input', (event) => {
+      pixelationTarget = Number(event.target.getAttribute('max')) + 1 - Number(event.target.value);
     });
   })
 })
